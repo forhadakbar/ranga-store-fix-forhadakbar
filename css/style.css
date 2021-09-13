@@ -3,7 +3,7 @@ body {
   font-family: "Montserrat", sans-serif;
 }
 
-
+/* All product card in 3 columns */
 #all-products {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -13,6 +13,8 @@ body {
   align-items: center;
   justify-content: center;
 }
+
+/* Each card style */
 .single-product {
   width: 100%;
   height: 100%;
@@ -21,11 +23,17 @@ body {
   border-radius: 4px;
   padding: 35px;
 }
+
+/* card on mouse over style */
+
 .single-product:hover {
   box-shadow: 4px 4px 7px gray;
   border-radius: 10px;
   border: 1px solid rgb(0, 153, 255);
 }
+
+/* Product image */
+
 .product-image {
   width: 150px;
   height: 150px;
@@ -36,6 +44,8 @@ body {
   height: 100%;
   padding: 10px;
 }
+
+/* Shopping card */
 
 .cart {
   width: 350px;
@@ -48,6 +58,8 @@ body {
 .cart-main {
   padding-right: 30px;
 }
+
+/* Product details */
 
 #Product-details{
   width: 100%;
