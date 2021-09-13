@@ -14,13 +14,14 @@ const showProducts = (products) => {
     div.classList.add("product");
     div.innerHTML = `<div class="single-product">
       <div>
-    <img class="product-image" src=${image}></img>
+    <img class="product-image" src=${product.image}></img>
       </div>
       <h3>${product.title}</h3>
       <p>Category: ${product.category}</p>
-      <h2>Price: $ ${product.price}</h2>
-      <button onclick="addToCart(${product.id},${product.price})" id="addToCart-btn" class="buy-now btn btn-success">add to cart</button>
-      <button id="details-btn" class="btn btn-danger">Details</button></div>
+      <p>Average Rating: ${product.rating.rate} Rating Count: ${product.rating.count}</p>
+      <h2 class="mb-4">Price: $ ${product.price}</h2>
+      <button onclick="addToCart(${product.id},${product.price})" id="addToCart-btn" class="buy-now btn btn-primary btn-sm">Add to cart</button>
+      <button onclick="showDetail(${product.id})" id="details-btn" class="btn btn-info btn-sm text-white">Details</button></div>
       `;
     document.getElementById("all-products").appendChild(div);
   }
@@ -32,11 +33,12 @@ const addToCart = (id, price) => {
 
   updateTaxAndCharge();
   document.getElementById("total-Products").innerText = count;
+  updateTotal();
 };
 
 const getInputValue = (id) => {
   const element = document.getElementById(id).innerText;
-  const converted = parseInt(element);
+  const converted = parseFloat(element);
   return converted;
 };
 
@@ -45,12 +47,12 @@ const updatePrice = (id, value) => {
   const convertedOldPrice = getInputValue(id);
   const convertPrice = parseFloat(value);
   const total = convertedOldPrice + convertPrice;
-  document.getElementById(id).innerText = Math.round(total);
+  document.getElementById(id).innerText = (Math.round(total * 100) / 100).toFixed(2);
 };
 
 // set innerText function
 const setInnerText = (id, value) => {
-  document.getElementById(id).innerText = Math.round(value);
+  document.getElementById(id).innerText = (Math.round(value * 100) / 100).toFixed(2);
 };
 
 // update delivery charge and total Tax
@@ -72,9 +74,39 @@ const updateTaxAndCharge = () => {
 
 //grandTotal update function
 const updateTotal = () => {
-  const grandTotal =
-    getInputValue("price") + getInputValue("delivery-charge") +
-    getInputValue("total-tax");
-  document.getElementById("total").innerText = grandTotal;
+  const grandTotal = getInputValue("price") + getInputValue("delivery-charge") + getInputValue("total-tax");
+  document.getElementById("total").innerText = (Math.round(grandTotal * 100) / 100).toFixed(2);
 };
+
+
+// Show details
+
+const showDetail = (id) => {
+
+  fetch(`https://fakestoreapi.com/products/${id}`)
+    .then(res => res.json())
+    .then(data => displayDetails(data.description))
+
+
+};
+
+const displayDetails = (data) => {
+
+  document.getElementById("Product-details").innerHTML = `
+
+  <div class ="shadow-lg m-4 p-4 rounded">
+    <h5> Product Details:</h5>
+    <p>${data}</P>
+    <button onclick="closeButtton()" id="close-btn" class="btn btn-secondary btn-sm text-white">Close Details</button></div>
+  </div>
+  `
+}
+
+//Close Details
+
+const closeButtton = () => {
+  document.getElementById("Product-details").textContent = '';
+}
+
+
 loadProducts();
